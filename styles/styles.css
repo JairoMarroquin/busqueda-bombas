@@ -1,0 +1,150 @@
+body{
+    padding: 2%;
+    font-family: 'Manrope', sans-serif;
+}
+
+.container_opciones{
+    width:auto;
+    display:flex;
+    justify-content: center;
+}
+
+.container_opciones .opcion{
+    width: 20%;
+    display:flex;
+    height:30%;
+}
+
+.opcion hr{
+    border:none;
+    border-right: 1px solid #000;
+    height: 60px;
+    width:1px;
+}
+
+.container_opciones .opcion a{
+    font-size:22px;
+    text-decoration: none;
+    color: #000;
+    margin-top:7%;
+}
+
+.opcion a:visited{
+    color: #000;
+    text-decoration: none;
+}
+
+.opcion a:hover {
+    color: #000;
+    text-decoration: underline;
+}
+
+.container_opciones .opcion a.active:before {
+    text-decoration: underline !important;
+}
+
+.tabla_bombas{
+    width:45%;
+}
+
+.tabla_bombas #gpm_header, #gpm_body, #opciones, #opc_tabla{
+    text-align: center;
+}
+
+.tabla_bombas #nombre_header{
+    font-weight:800;
+}
+
+.tabla_bombas #gpm_header{
+    font-weight: bold;
+}
+table .material-icons{
+    color:#4F4F4F;
+}
+th{
+    font-weight:800;
+}
+
+li{
+    font-size: 18px;
+}
+
+#bombas_recomendadas_card, #filtros_recomendados_card{
+    padding:1%;
+    border-radius: 15px;
+}
+
+#bombas_recomendadas{
+    text-align: center;
+}
+#filtros_recomendados{
+    text-align: center;
+}
+
+.lista_filtros_recomendados, .lista_bombas_recomendadas{
+    font-size: 18px;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    margin-left: 5%;
+    text-align: center;
+}
+
+#bombas_recomendadas ul li{
+    margin-left: 100px;
+}
+
+#buscar_bombas{
+    color:#424242;
+    font-weight: 500;
+    width: 5rem;
+}
+
+#lupa{
+    justify-content: center;
+}
+
+#bombas_recomendadas_card{
+    display: none;
+}
+
+#filtros_recomendados_card{
+    display: none;
+}
+
+
+/*OPCION DE ALBERCAS*/
+.opciones_alberca a{
+    color:#4F4F4F;
+}
+.alberca{
+    margin-left:10%;
+    margin-right:10%;
+}
+.container_alberca{
+    display:flex;
+    justify-content: space-around;
+}
+.nombre_tabla_alberca{
+    text-align:center;
+}
+
+.consultar_bombas_alberca{
+    text-align:center;
+}
+.profundidad_promedio{
+    font-size:15px;
+    opacity:85%;
+    text-decoration: underline;
+    margin-top: 2%;
+}
+
+.form_footer{
+    height: auto;
+    width:100%;
+    display:flex;
+    justify-content: space-between;
+}
+
+#titulo_gpm{
+    font-weight: bold;
+}
