@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="public/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="styles/styles.css">
     <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css"/>
     <link rel="stylesheet" href="public/css/materialize.min.css">
@@ -23,7 +23,7 @@
     </div>
     <div class="alberca">
         <div class="opciones_alberca">
-            <a data-target="registrar_bomba" id="reg_bom_but" class="btn waves-effect waves-light blue lighten-2 modal-trigger"><i class="left material-icons">add</i> Nuevo producto</a>
+            <a data-target="registrar_bomba" id="reg_bom_but" class="btn waves-effect waves-light blue lighten-2 modal-trigger"><i class="fa-light fa-plus"></i> Nuevo producto</a>
         </div><br><hr>
         <div class="container_alberca">
             <div class="tabla_bombas">
@@ -76,7 +76,7 @@
                                 <span id="profundidad_promedio">0</span> MTS
                             </div>
                             <div>
-                                <button class="waves-effect waves-light btn waves-effect waves-light blue lighten-2" id="buscar_bombas"><i class="material-icons tooltipped" id="lupa" data-position="bottom" data-tooltip="Ver bombas adecuadas para el cliente" id="buscar_bombas">search</i></button>
+                                <button class="waves-effect waves-light btn waves-effect waves-light blue lighten-2" id="buscar_bombas"><i class="fa-solid fa-magnifying-glass tooltipped" id="lupa" data-position="bottom" data-tooltip="Ver bombas adecuadas para el cliente" id="buscar_bombas"></i></button>
                             </div> 
                         </div>
                     </form>
@@ -245,6 +245,7 @@
 <script src="public/js/materialize.min.js"></script>
 <script src="public/sweetalert2/sweetalert2@11.js"></script>
 <script src="public/js/fancyTable.min.js"></script>
+<script src="public/js/all.min.js"></script>
 
 <script src="js/index.js"></script>
 </html>

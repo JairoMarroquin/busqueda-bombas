@@ -29,8 +29,8 @@
             <td><?php echo $mostrar['nombre'];?> de <?php echo $mostrar['hp'];?> HP para <?php echo $objetivo;?></td>
             <td id="gpm_body"><?php echo $mostrar['gpm'];?></td>
             <td id="opc_tabla">
-                <a data-target="editar_bomba" id="edi_bom_but" class="modal-trigger btn teal accent-3" onclick="return obtenerDatosProductoAlberca(<?php echo $mostrar['id_bomba'] ?>);"><i class="material-icons">edit</i></a>
-                <a class="btn red" onclick="return eliminarProductoConfirmar(<?php echo $mostrar['id_bomba'] ?> , '<?php echo $mostrar['nombre']; ?>');"><i class="material-icons">delete</i></a>
+                <a data-target="editar_bomba" id="edi_bom_but" class="modal-trigger btn teal accent-3" onclick="return obtenerDatosProductoAlberca(<?php echo $mostrar['id_bomba'] ?>);"><i class="fa-regular fa-pen-to-square"></i></a>
+                <a class="btn red" onclick="return eliminarProductoConfirmar(<?php echo $mostrar['id_bomba'] ?> , '<?php echo $mostrar['nombre']; ?>');"><i class="fa-regular fa-trash-can"></i></a>
             </td>
         </tr>
     <?php
