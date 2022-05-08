@@ -52,6 +52,7 @@ function buscarBombas(){
     $('#cero_bombas').hide();
     $('#cero_filtros').hide();
     $('#lista_bombas').hide();
+    $('#veneciano').hide();
     $('#lista_filtros').hide();
     $('#lista_filtros').text("");
     $('#lista_bombas').text("");
@@ -131,8 +132,9 @@ function buscarBombas(){
 
                     $('#titulo_gpm').text(valor.data[0].gpm_enviado);
                     $('#titulo_gpm2').text(valor.data[0].gpm_enviado);
+                    $('#veneciano').show();
+                    $('#veneciano').text(valor.data[0].caja_veneciano);
                 }
-                console.log(numBom+" "+numFil);
                 if(numBom == 0){
                     $('#cero_bombas').show();
                     $('#cero_bombas').text('No se encontró ninguna bomba compatible.'); 
@@ -143,24 +145,15 @@ function buscarBombas(){
                 }
                 
             }else{
-                let alto = parseFloat($('#largo').val());
-                let ancho = parseFloat($('#ancho').val());
-                let profundidad_minima = parseFloat($('#profundidad_minima').val());
-                let profundidad_maxima = parseFloat($('#profundidad_maxima').val());
-
-                //promediar y calcular
-                let pp = (profundidad_maxima+profundidad_minima)/2;
-                let lts = alto * ancho * pp;
-                let mts3 = lts * 1000;
-                let gal = mts3 / 3.785;
-                let gpm = gal / 360;
-
-                $('#titulo_gpm').text(gpm.toFixed(2));
-                $('#titulo_gpm2').text(gpm.toFixed(2));
+                $('#titulo_gpm').text(valor.gpm);
+                $('#titulo_gpm2').text(valor.gpm);
                 $('#cero_bombas').show();
                 $('#cero_filtros').show();
                 $('#cero_bombas').text(valor.msg);
                 $('#cero_filtros').text(valor.msg);
+                $('#veneciano').show();
+                $('#veneciano').css('font-weight', 'bold');
+                $('#veneciano').text(valor.cajas);
             }
         }
     });

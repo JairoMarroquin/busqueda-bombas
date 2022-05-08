@@ -11,17 +11,19 @@ include "../config/conexion.php";
             $profundidad_maxima = $datos['profundidad_maxima'];
 
             //SE HACEN LOS CALCULOS
-            $pp = ($profundidad_minima + $profundidad_maxima) / 2;          //profundidad promedio
-            $mts3 = $largo * $ancho * $pp;                                  //metros cubicos
-            $lts = $mts3 * 1000;                                            //litros
-            $gal = $lts / 3.785;                                            //galones
-            $gpm = $gal / 360;                                              //GPM
-            $gpm2 = $gpm + 15;                                            //se amplia el rango de busqueda
+            $pp = ($profundidad_minima + $profundidad_maxima) / 2;  //profundidad promedio
+            $mts3 = $largo * $ancho * $pp;                          //metros cubicos
+            $lts = $mts3 * 1000;                                    //litros
+            $gal = $lts / 3.785;                                    //galones
+            $gpm = round($gal / 360, 2);                            //GPM
+            $gpm2 = $gpm + 15;                                      //se amplia el rango de busqueda
 
             //PISO VENECIANO
             $piso = $largo * $ancho;
             $p1 = ($largo * $profundidad_maxima)*2;
             $p2 = ($ancho * $profundidad_maxima)*2;
+            $tot = $piso+$p1+$p2;
+            $cajas = ceil($tot/2.14);
 
             $conexion = Conexion::conectar();
             $sql = "SELECT nombre, hp, gpm, tipo FROM bombas_alberca WHERE gpm BETWEEN '$gpm' AND '$gpm2' AND eliminado = 0 ORDER BY gpm ASC LIMIT 7";
@@ -31,10 +33,11 @@ include "../config/conexion.php";
                 $mData=array('status'=>true);
                 while($bombas = mysqli_fetch_assoc($respuesta)){
                     $bombas['gpm_enviado']=round($gpm, 2);
+                    $bombas['caja_veneciano'] = $cajas;
                     $mData['data'][]=$bombas;
                 }
             }else{
-                $mData=array('status'=>false, 'msg'=>'No se encontraron productos compatibles.');
+                $mData=array('status'=>false, 'msg'=>'No se encontraron productos compatibles.', 'cajas' => $cajas, 'gpm' => $gpm);
             }
             return json_encode($mData); 
         }

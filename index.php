@@ -8,9 +8,6 @@
     <link rel="stylesheet" type="text/css" href="styles/styles.css">
     <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css"/>
     <link rel="stylesheet" href="public/css/materialize.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cabin:wght@500&family=Manrope:wght@700&display=swap" rel="stylesheet">
     <title>Ferretería</title>
 </head>
 <body>
@@ -34,22 +31,6 @@
                 <h5 class="consultar_bombas_alberca">Buscar productos de alberca</h5>
                 <div>
                     <form method="POST" id="form_buscar_bombas">
-                        <div class="row">
-                            <center>
-                                <div class="input-field col s6">
-                                    <span style="font-size: 14px;opacity:80%;">Tipo de alberca</span>
-                                    <div class="switch">
-                                        <label style="font-size:14px;">
-                                        Normal
-                                        <input type="hidden" value= "1" name="objetivo_buscar">
-                                        <input type="checkbox" value= "2" name="objetivo_buscar">
-                                        <span class="lever"></span>
-                                        Circular
-                                        </label>
-                                    </div>
-                                </div>
-                            </center>
-                        </div>
                         <div class="row">
                             <div class="input-field col s6">
                                 <input id="largo" name="largo" type="text" class="validate" onkeypress="return (event.charCode >= 46 && event.charCode <= 57)" min="1" required>
@@ -76,7 +57,7 @@
                                 <span id="profundidad_promedio">0</span> MTS
                             </div>
                             <div>
-                                <button class="waves-effect waves-light btn waves-effect waves-light blue lighten-2" id="buscar_bombas"><i class="fa-solid fa-magnifying-glass tooltipped" id="lupa" data-position="bottom" data-tooltip="Ver bombas adecuadas para el cliente" id="buscar_bombas"></i></button>
+                                <button class="waves-effect waves-light btn waves-effect waves-light blue lighten-2 tooltipped" data-position="bottom" data-tooltip="Ver productos adecuados para el cliente" id="buscar_bombas"><i class="fa-solid fa-magnifying-glass" id="lupa" id="buscar_bombas"></i></button>
                             </div> 
                         </div>
                     </form>
@@ -118,6 +99,7 @@
                             <div class="lista_bombas_recomendadas">
                                 <span id="cero_bombas"></span>
                                 <ul id="lista_bombas"></ul>
+                                <div><span>Cajas de piso veneciano requeridas:</span><span id="veneciano"></span></div>
                             </div>
                         </div>
                     </div>

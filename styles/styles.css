@@ -1,3 +1,10 @@
+@font-face{
+    font-family: "Manrope";
+    src: url('../public/fonts/Manrope/static/Manrope-Bold.ttf') format('truetype');
+    font-style: normal;
+    font-weight: 700;
+}
+
 body{
     padding: 2%;
     font-family: 'Manrope', sans-serif;
@@ -83,10 +90,12 @@ li{
 
 .lista_filtros_recomendados, .lista_bombas_recomendadas{
     font-size: 18px;
+    display: flex;
     margin-top: 5%;
     margin-bottom: 5%;
     margin-left: 5%;
     text-align: center;
+    flex-direction: column;
 }
 
 #bombas_recomendadas ul li{
@@ -146,5 +155,9 @@ li{
 }
 
 #titulo_gpm{
+    font-weight: bold;
+}
+
+#veneciano{
     font-weight: bold;
 }
