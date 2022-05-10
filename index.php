@@ -18,13 +18,25 @@
             <a href="#" id="pozo_profundo_opcion">Pozo Profundo</a>
         </div>
     </div>
-    <div class="alberca">
+    <div class="content">
         <div class="opciones_alberca">
-            <a data-target="registrar_bomba" id="reg_bom_but" class="btn waves-effect waves-light blue lighten-2 modal-trigger"><i class="fa-light fa-plus"></i> Nuevo producto</a>
-        </div><br><hr>
+            <div class="row">
+                <form id="form_validar_contra">
+                    <div class="input-field col s2">
+                        <label for="clave">Contraseña</label>
+                        <input id="clave" type="password" class="validate">
+                    </div>
+                    <div class="input-field col s1">
+                        <button class="btn blue lighten-1">Enviar</button>
+                    </div>
+                </form>
+                <div class="input-field col s2">
+                    <a data-target="registrar_bomba" id="reg_bom_but" class="btn waves-effect waves-light blue lighten-2 modal-trigger"><i class="fa-light fa-plus"></i> Nuevo producto</a>
+                </div>
+            </div>
+        </div><hr>
         <div class="container_alberca">
             <div class="tabla_bombas">
-                <!--<h5 class="nombre_tabla_alberca">Artículos para alberca</h5>-->
                 <div id="div_tabla_bombas"></div>
             </div>
             <div class="consultar_bomba">
@@ -113,6 +125,68 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="consultar_pozo_profundo">
+                <h5 class="consultar_bombas_pozo_profundo">Buscar productos de pozo profundo</h5>
+                <div>
+                    <form method="POST" id="form_buscar_pozo_profundo">
+                        <div class="row">
+                            <div class="input-field col s3">
+                                <a class='dropdown-trigger btn blue lighten-2' href='#' data-target='lps_pp'>LPS <i class="fa-solid fa-caret-down"></i></a>
+                            </div>
+                            <div class="input-field col s4">
+                                <div class="switch">
+                                    <label>
+                                       <span>Tanque precargado</span><br>
+                                        No
+                                        <input type="checkbox" checked>
+                                        <span class="lever"></span>
+                                        Si
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="input-field col s5">
+                                <div class="switch">
+                                    <label>
+                                       <span>Switch de presión</span><br>
+                                        30-50
+                                        <input type="checkbox">
+                                        <span class="lever"></span>
+                                        20-40
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s6">
+                                <ul id="ul_cargas">
+                                    <span class="titulo_cargas">Cargas</span><br>
+                                    <button type="button" id="agregar_carga" onclick="return agregarCarga();" class="btn blue lighten-2 tooltipped" data-position="left" data-tooltip="Agregar una carga"><i class="fa-solid fa-plus"></i></button>
+                                    <button type="button" id="quitar_carga" onclick="return quitarCarga();" class="btn red tooltipped" data-position="right" data-tooltip="Quitar una carga"><i class="fa-solid fa-minus"></i></button>
+                                    <div id="cargas">
+                                        <li class="input-field">
+                                            <label for="carga">C1</label>
+                                            <input id="carga" onkeypress="return (event.charCode >= 46 && event.charCode <= 57)" type="text" required>
+                                        </li>
+                                    </div>
+                                </ul>
+                            </div>
+                            <div class="col s6">
+                                <ul id="ul_friccion">
+                                    <span class="titulo_cargas">Fricción</span><br>
+                                    <button type="button" id="agregar_carga_friccion" onclick="return agregarCargaFriccion();" class="btn blue lighten-2 tooltipped" data-position="left" data-tooltip="Agregar una carga por fricción"><i class="fa-solid fa-plus"></i></button>
+                                    <button type="button" id="quitar_carga_friccion" onclick="return quitarCargaFriccion();" class="btn red tooltipped" data-position="right" data-tooltip="Quitar una carga por fricción"><i class="fa-solid fa-minus"></i></button>
+                                    <div id="fricciones">
+                                        <li class="input-field">
+                                            <label for="friccion">F1</label>
+                                            <input id="friccion" onkeypress="return (event.charCode >= 46 && event.charCode <= 57)" type="text" required>
+                                        </li>
+                                    </div>
+                                </ul>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -219,6 +293,17 @@
             </div>
         </div> 
     </form>
+
+    <!--DROPDOWNS-->
+    <ul id="lps_pp" class='dropdown-content' style="padding: 4%;">
+        <li>0.7  LPS</li>
+        <li>1 LPS</li>
+        <li>1.2 LPS</li>
+        <li>1.5 LPS</li>
+        <li>2 LPS</li>
+        <li>2.5 LPS</li>
+        <li>3 LPS</li>
+    </ul>
 
 </body>
 

@@ -1,24 +1,43 @@
 $(document).ready(function(){
     $('#div_tabla_bombas').load("partials/tabla.php");
-
     $('#alberca_opcion').css("text-decoration", "underline");
+    $('.consultar_pozo_profundo').hide();
 
+    $('#reg_bom_but').hide();
+    $('#del_bom_but').hide();
+    $('#edi_bom_but').hide();
 });
+
+$('#form_validar_contra').on('submit', validarContra);
+function validarContra(event){
+    event.preventDefault()
+    let clave = $('#clave').val();
+    if(clave == '19931994'){
+        $('#reg_bom_but').show();
+        $('.del_bom_but').show();
+        $('.edi_bom_but').show();
+    }else{
+        swal.fire('La contraseña es incorrecta', '', 'error');
+    }
+}
 
 $('#reg_bom_but').on('click', function(){
     $('#registrar_bomba').modal();
 });
 
-
 //subrayar opciones
  $('#alberca_opcion').on("click", function(){
     $('#alberca_opcion').css("text-decoration", "underline");
     $('#pozo_profundo_opcion').css("text-decoration", "none");
+    $('.consultar_bomba').show();
+    $('.consultar_pozo_profundo').hide();
  });
 
  $('#pozo_profundo_opcion').on("click", function(){
     $('#alberca_opcion').css("text-decoration", "none");
     $('#pozo_profundo_opcion').css("text-decoration", "underline");
+    $('.consultar_pozo_profundo').show();
+    $('.consultar_bomba').hide();
  });
 
 
@@ -46,6 +65,7 @@ function promediarProfundidad(){
 $('#form_buscar_bombas').on('submit', buscarBombas);
 
 function buscarBombas(){
+    event.preventDefault()
     //Se esconden los componentes requeridos al pulsar el boton buscar
     $('#bombas_recomendadas_card').hide();
     $('#filtros_recomendados_card').hide();
@@ -60,7 +80,6 @@ function buscarBombas(){
     let numBom = 0;
     let numFil = 0;
 
-    event.preventDefault()
     let parametros={
         "largo": parseFloat($('#largo').val()),
         "ancho": parseFloat($('#ancho').val()),
@@ -181,7 +200,7 @@ function registrarProductoAlberca(){
     return false;
 }
 
-//eliminar producto de la tabla
+//funciones de eliminar producto de la tabla
 
 function eliminarProductoConfirmar(id, nombre){
     event.preventDefault()
@@ -220,6 +239,7 @@ function eliminarProducto(idProd){
     });
 }
 
+//funciones de editar productos
 function obtenerDatosProductoAlberca(idProd){
     $('#editar_bomba').modal();
 
@@ -277,6 +297,45 @@ function editarProductoAlberca(){
     });
 }
 
+//agregar y quitar cargas y cargas por friccion
+let a = 1;
+function agregarCarga(){
+    a++;
+    let li = document.createElement('li');
+    li.setAttribute('class', 'input-field');
+    li.innerHTML = '<li class="input-field"> <label for="carga_'+a+'">C'+a+'</label> <input id="carga'+a+'" type="text" onkeypress="return (event.charCode >= 46 && event.charCode <= 57)"> </li>';
+    document.getElementById('cargas').appendChild(li);
+    
+}
+function quitarCarga(){
+    if(a > 1){
+        const li = document.getElementById('cargas');
+        li.removeChild(li.lastElementChild);
+        a--;
+    }else{
+        swal.fire('No puede haber 0 cargas', '', 'warning');
+    }
+}
+
+let b = 1;
+function agregarCargaFriccion(){
+    b++;
+    let li = document.createElement('li');
+    li.setAttribute('class', 'input-field');
+    li.innerHTML = '<li class="input-field"> <label for="carga_friccion_'+b+'">F'+b+'</label> <input id="carga_friccion'+b+'" type="text" onkeypress="return (event.charCode >= 46 && event.charCode <= 57)"> </li>';
+    document.getElementById('fricciones').appendChild(li);
+    
+}
+function quitarCargaFriccion(){
+    if(b > 1){
+        const li = document.getElementById('fricciones');
+        li.removeChild(li.lastElementChild);
+        b--;
+    }else{
+        swal.fire('No puede haber 0 cargas por fricción', '', 'warning');
+    }
+}
+
 //tooltip
 document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('.tooltipped');
@@ -285,3 +344,5 @@ document.addEventListener('DOMContentLoaded', function() {
         transitionMovement: 10
     });
 });
+//dropdown
+$('.dropdown-trigger').dropdown();

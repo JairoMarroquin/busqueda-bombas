@@ -120,14 +120,17 @@ li{
     display: none;
 }
 
+.dropdown-trigger{
+    color:#000;
+}
 
 /*OPCION DE ALBERCAS*/
 .opciones_alberca a{
     color:#4F4F4F;
 }
-.alberca{
-    margin-left:10%;
-    margin-right:10%;
+.content{
+    margin-left:7%;
+    margin-right:7%;
 }
 .container_alberca{
     display:flex;
@@ -138,6 +141,9 @@ li{
 }
 
 .consultar_bombas_alberca{
+    text-align:center;
+}
+.consultar_pozo_profundo{
     text-align:center;
 }
 .profundidad_promedio{
@@ -160,4 +166,10 @@ li{
 
 #veneciano{
     font-weight: bold;
+}
+
+/*OPCION DE POZO PROFUNDO*/
+
+.titulo_cargas{
+    font-weight: 700;
 }
