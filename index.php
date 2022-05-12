@@ -22,18 +22,21 @@
         <div class="opciones_alberca">
             <div class="row">
                 <form id="form_validar_contra">
-                    <div class="input-field col s2">
+                    <div class="input-field col s3">
                         <label for="clave">Contraseña</label>
-                        <input id="clave" type="password" class="validate">
+                        <input id="clave" type="password" class="validate" required>
                     </div>
-                    <div class="input-field col s1">
-                        <button class="btn blue lighten-1">Enviar</button>
+                    <div class="input-field col s2">
+                        <button class="btn blue lighten-1"><i class="fa-solid fa-lock-open"></i></button>
                     </div>
                 </form>
-                <div class="input-field col s2">
+                <div class="input-field col s4">
                     <a data-target="registrar_bomba" id="reg_bom_but" class="btn waves-effect waves-light blue lighten-2 modal-trigger"><i class="fa-light fa-plus"></i> Nuevo producto</a>
-                </div>
+                </div><br>
             </div>
+        </div>
+        <div id="clave_incorr">
+            <span style="color:red;">La contraseña es incorrecta!</span>
         </div><hr>
         <div class="container_alberca">
             <div class="tabla_bombas">
@@ -69,7 +72,7 @@
                                 <span id="profundidad_promedio">0</span> MTS
                             </div>
                             <div>
-                                <button class="waves-effect waves-light btn waves-effect waves-light blue lighten-2 tooltipped" data-position="bottom" data-tooltip="Ver productos adecuados para el cliente" id="buscar_bombas"><i class="fa-solid fa-magnifying-glass" id="lupa" id="buscar_bombas"></i></button>
+                                <button class="waves-effect waves-light btn waves-effect waves-light blue lighten-2 tooltipped" data-position="bottom" data-tooltip="Ver productos adecuados para el cliente" id="buscar_bombas"><i class="fa-solid fa-magnifying-glass" id="lupa"></i></button>
                             </div> 
                         </div>
                     </form>
@@ -130,17 +133,29 @@
             <div class="consultar_pozo_profundo">
                 <h5 class="consultar_bombas_pozo_profundo">Buscar productos de pozo profundo</h5>
                 <div>
-                    <form method="POST" id="form_buscar_pozo_profundo">
+                    <form id="form_buscar_bombas_pp">
                         <div class="row">
                             <div class="input-field col s3">
-                                <a class='dropdown-trigger btn blue lighten-2' href='#' data-target='lps_pp'>LPS <i class="fa-solid fa-caret-down"></i></a>
+                                <div class="input-field">
+                                    <select class="browser-default" name="lps" id="lps" required>
+                                        <option value="">LPS</option>
+                                        <option value="0.7">0.7</option>
+                                        <option value="1">1</option>
+                                        <option value="1.2">1.2</option>
+                                        <option value="1.5">1.5</option>
+                                        <option value="2">2</option>
+                                        <option value="2.5">2.5</option>
+                                        <option value="3">3</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="input-field col s4">
                                 <div class="switch">
                                     <label>
                                        <span>Tanque precargado</span><br>
                                         No
-                                        <input type="checkbox" checked>
+                                        <input type="hidden" name="tanque_precargado" value="0">
+                                        <input type="checkbox" name="tanque_precargado" value="1" checked>
                                         <span class="lever"></span>
                                         Si
                                     </label>
@@ -151,7 +166,8 @@
                                     <label>
                                        <span>Switch de presión</span><br>
                                         30-50
-                                        <input type="checkbox">
+                                        <input type="hidden" name="switch_presion" value="0">
+                                        <input type="checkbox" name="switch_presion" value="1">
                                         <span class="lever"></span>
                                         20-40
                                     </label>
@@ -159,32 +175,63 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col s6">
+                            <div class="col s5">
                                 <ul id="ul_cargas">
                                     <span class="titulo_cargas">Cargas</span><br>
-                                    <button type="button" id="agregar_carga" onclick="return agregarCarga();" class="btn blue lighten-2 tooltipped" data-position="left" data-tooltip="Agregar una carga"><i class="fa-solid fa-plus"></i></button>
-                                    <button type="button" id="quitar_carga" onclick="return quitarCarga();" class="btn red tooltipped" data-position="right" data-tooltip="Quitar una carga"><i class="fa-solid fa-minus"></i></button>
-                                    <div id="cargas">
-                                        <li class="input-field">
-                                            <label for="carga">C1</label>
-                                            <input id="carga" onkeypress="return (event.charCode >= 46 && event.charCode <= 57)" type="text" required>
-                                        </li>
-                                    </div>
+                                    <a id="agregar_carga" onclick="return agregarCarga();" class="btn blue lighten-2 tooltipped" data-position="left" data-tooltip="Agregar una carga"><i class="fa-solid fa-plus"></i></a>
+                                    <a id="quitar_carga" onclick="return quitarCarga();" class="btn red tooltipped" data-position="right" data-tooltip="Quitar una carga"><i class="fa-solid fa-minus"></i></a>
                                 </ul>
                             </div>
                             <div class="col s6">
                                 <ul id="ul_friccion">
                                     <span class="titulo_cargas">Fricción</span><br>
-                                    <button type="button" id="agregar_carga_friccion" onclick="return agregarCargaFriccion();" class="btn blue lighten-2 tooltipped" data-position="left" data-tooltip="Agregar una carga por fricción"><i class="fa-solid fa-plus"></i></button>
-                                    <button type="button" id="quitar_carga_friccion" onclick="return quitarCargaFriccion();" class="btn red tooltipped" data-position="right" data-tooltip="Quitar una carga por fricción"><i class="fa-solid fa-minus"></i></button>
-                                    <div id="fricciones">
+                                    <a id="agregar_carga_friccion" onclick="return agregarCargaFriccion();" class="btn blue lighten-2 tooltipped" data-position="left" data-tooltip="Agregar una carga por fricción"><i class="fa-solid fa-plus"></i></a>
+                                    <a id="quitar_carga_friccion" onclick="return quitarCargaFriccion();" class="btn red tooltipped" data-position="right" data-tooltip="Quitar una carga por fricción"><i class="fa-solid fa-minus"></i></a>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s5">
+                                <div>
+                                    <ul id="cargas">
+                                        <li class="input-field">
+                                            <label for="carga">C1</label>
+                                            <input id="carga" onkeypress="return (event.charCode >= 46 && event.charCode <= 57)" type="text" required>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col s3">
+                                <div>
+                                    <ul id="fricciones">
                                         <li class="input-field">
                                             <label for="friccion">F1</label>
                                             <input id="friccion" onkeypress="return (event.charCode >= 46 && event.charCode <= 57)" type="text" required>
                                         </li>
-                                    </div>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col s4">
+                                <ul id="diametros">
+                                    <li class="input-field">
+                                        <select class="browser-default" name="diametro_val1" id="diametro_val_1" required>
+                                            <option value="" disabled selected>&Oslash1</option>
+                                            <option value="1">(&Oslash1) 1/2"</option>
+                                            <option value="2">(&Oslash1) 3/4"</option>
+                                            <option value="3">(&Oslash1) 1"</option>
+                                            <option value="4">(&Oslash1) 1 1/4"</option>
+                                            <option value="5">(&Oslash1) 1 1/2"</option>
+                                            <option value="6">(&Oslash1) 1 3/4"</option>
+                                        </select>
+                                    </li>
                                 </ul>
                             </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s10"></div>
+                            <div class="col s2">
+                                <button class="waves-effect waves-light btn waves-effect waves-light blue lighten-2 tooltipped" data-position="bottom" data-tooltip="Ver productos adecuados para el cliente." id="buscar_bombas_pp"><i class="fa-solid fa-magnifying-glass"></i></button>
+                            </div> 
                         </div>
                     </form>
                 </div>
@@ -293,18 +340,7 @@
             </div>
         </div> 
     </form>
-
-    <!--DROPDOWNS-->
-    <ul id="lps_pp" class='dropdown-content' style="padding: 4%;">
-        <li>0.7  LPS</li>
-        <li>1 LPS</li>
-        <li>1.2 LPS</li>
-        <li>1.5 LPS</li>
-        <li>2 LPS</li>
-        <li>2.5 LPS</li>
-        <li>3 LPS</li>
-    </ul>
-
+    
 </body>
 
 <script src="public/jquery-3.6.0.min.js"></script>

@@ -6,6 +6,10 @@ $(document).ready(function(){
     $('#reg_bom_but').hide();
     $('#del_bom_but').hide();
     $('#edi_bom_but').hide();
+    $('#clave_incorr').hide();
+    
+    //select
+    $('select').formSelect();
 });
 
 $('#form_validar_contra').on('submit', validarContra);
@@ -16,8 +20,10 @@ function validarContra(event){
         $('#reg_bom_but').show();
         $('.del_bom_but').show();
         $('.edi_bom_but').show();
+        $('#clave_incorr').hide();
+        $('#clave').val('');
     }else{
-        swal.fire('La contraseña es incorrecta', '', 'error');
+        $('#clave_incorr').show();
     }
 }
 
@@ -101,17 +107,17 @@ function buscarBombas(){
             $('#preloader_cards').hide();
             $('#buscar_bombas').prop('disabled', false);
             if (jqXHR.status === 0) {
-                console.log('Not connect: Verify Network.');
+                alert('Not connect: Verify Network.');
               } else if (jqXHR.status == 404) {
-                console.log('Requested page not found [404]');
+                alert('Requested page not found [404]');
               } else if (jqXHR.status == 500) {
-                console.log('Internal Server Error [500].');
+                alert('Internal Server Error [500].');
               } else if (textStatus === 'parsererror') {
-                console.log('Requested JSON parse failed.');
+                alert('Requested JSON parse failed.');
               } else if (textStatus === 'timeout') {
-                console.log('Time out error.');
+                alert('Time out error.');
               } else if (textStatus === 'abort') {
-                console.log('Ajax request aborted.');
+                alert('Ajax request aborted.');
               }
               console.log(xhr.responseText);
         },
@@ -303,9 +309,9 @@ function agregarCarga(){
     a++;
     let li = document.createElement('li');
     li.setAttribute('class', 'input-field');
-    li.innerHTML = '<li class="input-field"> <label for="carga_'+a+'">C'+a+'</label> <input id="carga'+a+'" type="text" onkeypress="return (event.charCode >= 46 && event.charCode <= 57)"> </li>';
+    li.innerHTML = '<label for="carga_'+a+'">C'+a+'</label> <input id="carga'+a+'" type="text" onkeypress="return (event.charCode >= 46 && event.charCode <= 57)" required>';
     document.getElementById('cargas').appendChild(li);
-    
+    console.log(li);
 }
 function quitarCarga(){
     if(a > 1){
@@ -318,22 +324,44 @@ function quitarCarga(){
 }
 
 let b = 1;
+let maxFields = 10;
 function agregarCargaFriccion(){
-    b++;
-    let li = document.createElement('li');
-    li.setAttribute('class', 'input-field');
-    li.innerHTML = '<li class="input-field"> <label for="carga_friccion_'+b+'">F'+b+'</label> <input id="carga_friccion'+b+'" type="text" onkeypress="return (event.charCode >= 46 && event.charCode <= 57)"> </li>';
-    document.getElementById('fricciones').appendChild(li);
-    
+    if(b < maxFields){
+        b++;
+        let li = document.createElement('li');
+        li.setAttribute('class', 'input-field');
+        li.innerHTML = '<label for="carga_friccion_'+b+'">F'+b+'</label> <input id="carga_friccion'+b+'" type="text" onkeypress="return (event.charCode >= 46 && event.charCode <= 57)" required>';
+        document.getElementById('fricciones').appendChild(li);
+        
+        let select = document.createElement('li');
+        select.setAttribute('class', 'input-field');
+        let sel_tex = '<select class="browser-default" name="diametro_val'+b+'" id="diametro_val_'+b+'" required><option value="">&Oslash'+b+'</option><option value="1">1/2"</option><option value="2">(&Oslash1) 3/4"</option><option value="3">(&Oslash1) 1"</option><option value="4">(&Oslash1) 1 1/4"</option><option value="5">(&Oslash1) 1 1/2"</option><option value="6">(&Oslash1) 1 3/4"</option></select>';
+        select.innerHTML = sel_tex;
+        console.log(select);
+        document.getElementById('diametros').appendChild(select);
+
+    }else{
+        swal.fire('No se pueden agregar mas campos', 'Solo se pueden tener 10 campos', 'warning');
+    }
 }
 function quitarCargaFriccion(){
     if(b > 1){
         const li = document.getElementById('fricciones');
         li.removeChild(li.lastElementChild);
+
+        const sel = document.getElementById('diametros');
+        sel.removeChild(sel.lastElementChild);
         b--;
     }else{
         swal.fire('No puede haber 0 cargas por fricción', '', 'warning');
     }
+}
+
+$('#form_buscar_bombas_pp').on('submit', buscarBombaPP);
+function buscarBombaPP(){
+    event.preventDefault()
+    console.log('aa');
+    alert('aa');
 }
 
 //tooltip
@@ -344,5 +372,4 @@ document.addEventListener('DOMContentLoaded', function() {
         transitionMovement: 10
     });
 });
-//dropdown
-$('.dropdown-trigger').dropdown();
+    
