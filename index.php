@@ -195,8 +195,8 @@
                                 <div>
                                     <ul id="cargas">
                                         <li class="input-field">
-                                            <label for="carga">C1</label>
-                                            <input id="carga" onkeypress="return (event.charCode >= 46 && event.charCode <= 57)" type="text" required>
+                                            <label for="carga">C1(mts)</label>
+                                            <input id="carga" name="carga[]" onkeypress="return (event.charCode >= 46 && event.charCode <= 57)" type="text" required>
                                         </li>
                                     </ul>
                                 </div>
@@ -205,8 +205,8 @@
                                 <div>
                                     <ul id="fricciones">
                                         <li class="input-field">
-                                            <label for="friccion">F1</label>
-                                            <input id="friccion" onkeypress="return (event.charCode >= 46 && event.charCode <= 57)" type="text" required>
+                                            <label for="friccion">F1(mts)</label>
+                                            <input id="friccion" name="carga_friccion[]" onkeypress="return (event.charCode >= 46 && event.charCode <= 57)" type="text" required>
                                         </li>
                                     </ul>
                                 </div>
@@ -214,14 +214,14 @@
                             <div class="col s4">
                                 <ul id="diametros">
                                     <li class="input-field">
-                                        <select class="browser-default" name="diametro_val1" id="diametro_val_1" required>
+                                        <select class="browser-default diametros" name="diametro_val[]" id="diametro_val_1" required>
                                             <option value="" disabled selected>&Oslash1</option>
-                                            <option value="1">(&Oslash1) 1/2"</option>
-                                            <option value="2">(&Oslash1) 3/4"</option>
-                                            <option value="3">(&Oslash1) 1"</option>
-                                            <option value="4">(&Oslash1) 1 1/4"</option>
-                                            <option value="5">(&Oslash1) 1 1/2"</option>
-                                            <option value="6">(&Oslash1) 1 3/4"</option>
+                                            <option class="diam_1" value="1">(&Oslash1) 1/2"</option>
+                                            <option class="diam_2" value="2">(&Oslash1) 3/4"</option>
+                                            <option class="diam_3" value="3">(&Oslash1) 1"</option>
+                                            <option class="diam_4" value="4">(&Oslash1) 1 1/4"</option>
+                                            <option class="diam_5" value="5">(&Oslash1) 1 1/2"</option>
+                                            <option class="diam_6" value="6">(&Oslash1) 2"</option>
                                         </select>
                                     </li>
                                 </ul>
@@ -234,6 +234,35 @@
                             </div> 
                         </div>
                     </form>
+                    <br>
+                    <!--CARDS PARA PRELOADERS-->
+                    <center>
+                        <div style="display:none;" id="preloader_cards_pp">
+                            <div class="preloader-wrapper big active" style="display:block;" >
+                                <div class="spinner-layer spinner-blue-only">
+                                    <div class="circle-clipper left">
+                                        <div class="circle"></div>
+                                    </div><div class="gap-patch">
+                                        <div class="circle"></div>
+                                    </div><div class="circle-clipper right">
+                                        <div class="circle"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br><br><br><br><br>
+                            <div class="preloader-wrapper big active" style="display:block;">
+                                <div class="spinner-layer spinner-blue-only">
+                                    <div class="circle-clipper left">
+                                        <div class="circle"></div>
+                                    </div><div class="gap-patch">
+                                        <div class="circle"></div>
+                                    </div><div class="circle-clipper right">
+                                        <div class="circle"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </center>
                 </div>
             </div>
         </div>

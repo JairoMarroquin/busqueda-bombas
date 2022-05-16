@@ -309,7 +309,7 @@ function agregarCarga(){
     a++;
     let li = document.createElement('li');
     li.setAttribute('class', 'input-field');
-    li.innerHTML = '<label for="carga_'+a+'">C'+a+'</label> <input id="carga'+a+'" type="text" onkeypress="return (event.charCode >= 46 && event.charCode <= 57)" required>';
+    li.innerHTML = '<label for="carga_'+a+'">C'+a+'(mts)</label> <input id="carga'+a+'" name="carga[]" type="text" onkeypress="return (event.charCode >= 46 && event.charCode <= 57)" required>';
     document.getElementById('cargas').appendChild(li);
     console.log(li);
 }
@@ -326,18 +326,18 @@ function quitarCarga(){
 let b = 1;
 let maxFields = 10;
 function agregarCargaFriccion(){
+    disableDiametros();
     if(b < maxFields){
         b++;
         let li = document.createElement('li');
         li.setAttribute('class', 'input-field');
-        li.innerHTML = '<label for="carga_friccion_'+b+'">F'+b+'</label> <input id="carga_friccion'+b+'" type="text" onkeypress="return (event.charCode >= 46 && event.charCode <= 57)" required>';
+        li.innerHTML = '<label for="carga_friccion_'+b+'">F'+b+'(mts)</label> <input id="carga_friccion'+b+'" name="carga_friccion[]" type="text" onkeypress="return (event.charCode >= 46 && event.charCode <= 57)" required>';
         document.getElementById('fricciones').appendChild(li);
         
         let select = document.createElement('li');
         select.setAttribute('class', 'input-field');
-        let sel_tex = '<select class="browser-default" name="diametro_val'+b+'" id="diametro_val_'+b+'" required><option value="">&Oslash'+b+'</option><option value="1">1/2"</option><option value="2">(&Oslash1) 3/4"</option><option value="3">(&Oslash1) 1"</option><option value="4">(&Oslash1) 1 1/4"</option><option value="5">(&Oslash1) 1 1/2"</option><option value="6">(&Oslash1) 1 3/4"</option></select>';
+        let sel_tex = '<select class="browser-default diametros" name="diametro_val[]" id="diametro_val_'+b+'" required><option value="" disabled selected>&Oslash'+b+'</option><option value="1" class="diam_1">(&Oslash'+b+') 1/2"</option><option value="2" class="diam_2">(&Oslash'+b+') 3/4"</option><option value="3" class="diam_3">(&Oslash'+b+') 1"</option><option value="4" class="diam_4">(&Oslash'+b+') 1 1/4"</option><option value="5" class="diam_5">(&Oslash'+b+') 1 1/2"</option><option value="6" class="diam_6">(&Oslash'+b+') 2"</option></select>';
         select.innerHTML = sel_tex;
-        console.log(select);
         document.getElementById('diametros').appendChild(select);
 
     }else{
@@ -357,11 +357,59 @@ function quitarCargaFriccion(){
     }
 }
 
+$('#lps').on('change', disableDiametros);
+
+function disableDiametros(){
+    if($('#lps').val() == 1.2 || $('#lps').val() == 1.5){
+        $('.diam_1').prop('disabled', false);
+        $('.diam_2').prop('disabled', false);
+        $('.diam_3').prop('disabled', false);
+        $('.diam_4').prop('disabled', false);
+        $('.diam_5').prop('disabled', false);
+        $('.diam_6').prop('disabled', true);
+    }
+
+    if($('#lps').val() == 2 || $('#lps').val() == 2.5 || $('#lps').val() == 3){
+        $('.diam_1').prop('disabled', true);
+        $('.diam_2').prop('disabled', true);
+        $('.diam_3').prop('disabled', false);
+        $('.diam_4').prop('disabled', false);
+        $('.diam_5').prop('disabled', false);
+        $('.diam_6').prop('disabled', false);
+    }
+}
+
 $('#form_buscar_bombas_pp').on('submit', buscarBombaPP);
 function buscarBombaPP(){
     event.preventDefault()
-    console.log('aa');
-    alert('aa');
+    $.ajax({
+        method: "POST",
+        data: $('#form_buscar_bombas_pp').serialize(),
+        url:"procesos/agregarProductoPP.php",
+        beforeSend: function(){
+            $('#preloader_cards_pp').show();
+        },
+        error(jqXHR, textStatus, errorThrown){
+            $('#preloader_cards_pp').hide();
+            if (jqXHR.status === 0) {
+                alert('Not connect: Verify Network.');
+              } else if (jqXHR.status == 404) {
+                alert('Requested page not found [404]');
+              } else if (jqXHR.status == 500) {
+                alert('Internal Server Error [500].');
+              } else if (textStatus === 'parsererror') {
+                alert('Requested JSON parse failed.');
+              } else if (textStatus === 'timeout') {
+                alert('Time out error.');
+              } else if (textStatus === 'abort') {
+                alert('Ajax request aborted.');
+              }
+              console.log(xhr.responseText);
+        },
+        success: function(mensaje){
+            console.log(mensaje);
+        }
+    });
 }
 
 //tooltip
