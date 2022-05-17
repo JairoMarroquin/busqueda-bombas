@@ -175,6 +175,21 @@
                             </div>
                         </div>
                         <div class="row">
+                            <div class="input-field col s6">
+                                <p>
+                                    <label>
+                                        <input name="custom_lps" value="0" type="hidden"/>
+                                        <input id="custom_lps" name="custom_lps" value="1" type="checkbox"/>
+                                        <span>Otros LPS</span>
+                                    </label>
+                                </p>
+                            </div>
+                            <div class="input-field col s6">  
+                                <label for="lps_custom">LPS</label>
+                                <input id="lps_custom" name="lps_custom" onkeypress="return (event.charCode >= 46 && event.charCode <= 57)" type="text" required>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col s5">
                                 <ul id="ul_cargas">
                                     <span class="titulo_cargas">Cargas</span><br>
@@ -304,11 +319,21 @@
                             <label style="font-size:14px;">
                             Alberca
                             <input type="hidden" value= "1" name="objetivo" checked>
-                            <input type="checkbox" value= "2" name="objetivo">
+                            <input type="checkbox" value= "2" name="objetivo" id="objetivo">
                             <span class="lever"></span>
                             Pozo Profundo
                             </label>
                         </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s4">
+                        <input id="lps_reg" name="lps_reg" type="text" class="validate" onkeypress="return (event.charCode >= 46 && event.charCode <= 57)" min="1" required>
+                        <label for="lps_reg">LPS</label>
+                    </div>
+                    <div class="input-field col s4">
+                        <input id="carga_eficiente" name="carga_eficiente" type="text" class="validate" onkeypress="return (event.charCode >= 46 && event.charCode <= 57)" min="1" required>
+                        <label for="carga_eficiente">Carga Eficiente</label>
                     </div>
                 </div>
             </div>

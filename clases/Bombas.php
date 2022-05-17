@@ -87,4 +87,8 @@ include "../config/conexion.php";
 
             return $respuesta;
         }
+        public function buscarProductosPP($cdt){
+            $conexion = Conexion::conectar();
+            $sql = "SELECT * FROM ";
+        }
     }

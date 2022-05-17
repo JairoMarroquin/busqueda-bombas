@@ -3,11 +3,16 @@ $(document).ready(function(){
     $('#alberca_opcion').css("text-decoration", "underline");
     $('.consultar_pozo_profundo').hide();
 
-    $('#reg_bom_but').hide();
+    //$('#reg_bom_but').hide();
     $('#del_bom_but').hide();
     $('#edi_bom_but').hide();
     $('#clave_incorr').hide();
     
+    //deshabilitar inputs de modales
+    $('#lps_reg').prop('disabled', true);
+    $('#carga_eficiente').prop('disabled', true);
+
+    $('#lps_custom').prop('disabled', true);
     //select
     $('select').formSelect();
 });
@@ -26,6 +31,27 @@ function validarContra(event){
         $('#clave_incorr').show();
     }
 }
+
+$('#custom_lps').on('change', function(){
+    if($("#custom_lps").is(':checked')){
+        $('#lps_custom').prop('disabled', false);
+        $('#lps').prop('disabled', true);
+    }else{
+        $('#lps_custom').prop('disabled', true);
+        $('#lps').prop('disabled', false);
+    }
+});
+
+//habilitar inputs de modal
+$('#objetivo').on('change', function(){
+    if($("#objetivo").is(':checked')){
+        $('#lps_reg').prop('disabled', false);
+        $('#carga_eficiente').prop('disabled', false);
+    }else{
+        $('#lps_reg').prop('disabled', true);
+        $('#carga_eficiente').prop('disabled', true);
+    }
+});
 
 $('#reg_bom_but').on('click', function(){
     $('#registrar_bomba').modal();
@@ -193,7 +219,6 @@ function registrarProductoAlberca(){
         url: "procesos/agregarProductoAlberca.php",
         success:function(respuesta){
             respuesta = respuesta.trim();
-            console.log(respuesta);
             if(respuesta == 1){
                 $('#div_tabla_bombas').load("partials/tabla.php");
                 $('#frmAgregarProductoAlberca')[0].reset();
@@ -233,7 +258,6 @@ function eliminarProducto(idProd){
         data: id,
         url: "procesos/eliminarProducto.php",
         success: function(respuesta){
-            console.log(respuesta);
             respuesta = respuesta.trim();
             if(respuesta == 1){
                 $('#div_tabla_bombas').load("partials/tabla.php"); 
@@ -290,7 +314,6 @@ function editarProductoAlberca(){
         data: $('#frmEditarProductoAlberca').serialize(),
         url: "procesos/editar_bomba.php",
         success: function(respuesta){
-            console.log(respuesta);
             respuesta = respuesta.trim();
             if(respuesta == 1){
                 $('#div_tabla_bombas').load("partials/tabla.php"); 
@@ -311,7 +334,6 @@ function agregarCarga(){
     li.setAttribute('class', 'input-field');
     li.innerHTML = '<label for="carga_'+a+'">C'+a+'(mts)</label> <input id="carga'+a+'" name="carga[]" type="text" onkeypress="return (event.charCode >= 46 && event.charCode <= 57)" required>';
     document.getElementById('cargas').appendChild(li);
-    console.log(li);
 }
 function quitarCarga(){
     if(a > 1){
@@ -360,6 +382,14 @@ function quitarCargaFriccion(){
 $('#lps').on('change', disableDiametros);
 
 function disableDiametros(){
+    if($('#lps').val() == 0.7 || $('#lps').val() == 1){
+        $('.diam_1').prop('disabled', false);
+        $('.diam_2').prop('disabled', false);
+        $('.diam_3').prop('disabled', false);
+        $('.diam_4').prop('disabled', false);
+        $('.diam_5').prop('disabled', false);
+        $('.diam_6').prop('disabled', false);
+    }
     if($('#lps').val() == 1.2 || $('#lps').val() == 1.5){
         $('.diam_1').prop('disabled', false);
         $('.diam_2').prop('disabled', false);
@@ -407,6 +437,13 @@ function buscarBombaPP(){
               console.log(xhr.responseText);
         },
         success: function(mensaje){
+            mensaje = jQuery.parseJSON(mensaje);
+            if(mensaje == '-1'){
+                swal.fire('El valor de LPS ingresado es muy alto', 'Ingresa uno mas pequeño', 'error');
+            }
+            if(mensaje == '-2'){
+                swal.fire('El valor de LPS ingresado no se puede utilizar con ese diámetro', 'Ingresa un valor de diámetro o LPS diferente', 'error');
+            }
             console.log(mensaje);
         }
     });
