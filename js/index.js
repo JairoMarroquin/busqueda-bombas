@@ -3,11 +3,11 @@ $(document).ready(function(){
     $('#alberca_opcion').css("text-decoration", "underline");
     $('.consultar_pozo_profundo').hide();
 
-    //$('#reg_bom_but').hide();
-    $('#del_bom_but').hide();
-    $('#edi_bom_but').hide();
+    $('.reg_bom_but').hide();
+    $('.del_bom_but').hide();
+    $('.edi_bom_but').hide();
     $('#clave_incorr').hide();
-    
+
     //deshabilitar inputs de modales
     $('#lps_reg').prop('disabled', true);
     $('#carga_eficiente').prop('disabled', true);
@@ -22,12 +22,15 @@ function validarContra(event){
     event.preventDefault()
     let clave = $('#clave').val();
     if(clave == '19931994'){
-        $('#reg_bom_but').show();
+        $('.reg_bom_but').show();
         $('.del_bom_but').show();
         $('.edi_bom_but').show();
         $('#clave_incorr').hide();
         $('#clave').val('');
-    }else{
+    }else{    
+        $('.reg_bom_but').hide();
+        $('.del_bom_but').hide();
+        $('.edi_bom_but').hide();
         $('#clave_incorr').show();
     }
 }
@@ -36,10 +39,18 @@ $('#custom_lps').on('change', function(){
     if($("#custom_lps").is(':checked')){
         $('#lps_custom').prop('disabled', false);
         $('#lps').prop('disabled', true);
+        $('#gpm_label').text("0");
     }else{
         $('#lps_custom').prop('disabled', true);
         $('#lps').prop('disabled', false);
     }
+});
+
+$('#lps_custom').on('change', function(){
+    let lpsCustom = $('#lps_custom').val();
+    let lpm = lpsCustom * 60;
+    let gpm = lpm / 3.785;
+    $('#gpm_label').text(Math.round(gpm));
 });
 
 //habilitar inputs de modal
@@ -47,9 +58,11 @@ $('#objetivo').on('change', function(){
     if($("#objetivo").is(':checked')){
         $('#lps_reg').prop('disabled', false);
         $('#carga_eficiente').prop('disabled', false);
+        $('#gpm_producto').prop('disabled', true);
     }else{
         $('#lps_reg').prop('disabled', true);
         $('#carga_eficiente').prop('disabled', true);
+        $('#gpm_producto').prop('disabled', false);
     }
 });
 
@@ -210,6 +223,71 @@ function buscarBombas(){
     });
 }
 
+$('#form_buscar_bombas_pp').on('submit', buscarBombaPP);
+function buscarBombaPP(){
+    event.preventDefault()
+    $('#bombas_recomendadas_pp_card').hide();
+    $('#cero_bombas_pp').hide();
+    $('#lista_bombas_pp').hide();
+    $('#lista_bombas_pp').text("");
+    $.ajax({
+        method: "POST",
+        data: $('#form_buscar_bombas_pp').serialize(),
+        url:"procesos/agregarProductoPP.php",
+        beforeSend: function(){
+            $('#preloader_cards_pp').show();
+            $('#buscar_bombas_pp').prop('disabled', true);
+        },
+        error(jqXHR, textStatus, errorThrown){
+            $('#preloader_cards_pp').hide();
+            if (jqXHR.status === 0) {
+                alert('Not connect: Verify Network.');
+              } else if (jqXHR.status == 404) {
+                alert('Requested page not found [404]');
+              } else if (jqXHR.status == 500) {
+                alert('Internal Server Error [500].');
+              } else if (textStatus === 'parsererror') {
+                alert('Requested JSON parse failed.');
+              } else if (textStatus === 'timeout') {
+                alert('Time out error.');
+              } else if (textStatus === 'abort') {
+                alert('Ajax request aborted.');
+              }
+              console.log(xhr.responseText);
+        },
+        success: function(respuesta){
+            $('#preloader_cards_pp').hide();
+            $('#buscar_bombas_pp').prop('disabled', false);
+            respuesta = jQuery.parseJSON(respuesta);
+            if(respuesta == '-1'){
+                swal.fire('El valor de LPS ingresado es muy alto', 'Ingresa uno valor de LPSmas pequeño', 'error');
+            }
+            if(respuesta == '-2'){
+                swal.fire('Ingresa un valor de diámetro o LPS diferente', 'El valor de LPS ingresado no se puede utilizar con ese diámetro',  'error');
+            }
+
+            if(respuesta.status){
+                let numeroProductosPP = respuesta.data.length;
+                for(let i = 0; i < numeroProductosPP; i++){
+                    $('#list_item_bomba_pp_'+i).text("");
+                        //imprimir <li>
+                        $('#lista_bombas_pp').show();
+                        $('#cero_bombas_pp').hide();
+                        $('#lista_bombas_pp').append('<li id="list_item_bomba_pp_'+i+'"></li>');
+                        $("#list_item_bomba_pp_"+i).text(respuesta.data[i].nombre+" de "+respuesta.data[i].hp+"HP que da "+respuesta.data[i].gpm+" GPM en "+respuesta.data[i].carga_eficiente+' MTS');
+
+                    $('#titulo_cdt').text(respuesta.data[0].cdt);
+                }
+                $('#bombas_recomendadas_pp_card').show();
+            }else{
+                $('#bombas_recomendadas_pp_card').show();
+                $('#cero_bombas_pp').show();
+                $('#cero_bombas_pp').text(respuesta.msg);
+            }
+        }
+    });
+}
+
 //registrar productos de alberca
 
 function registrarProductoAlberca(){
@@ -316,8 +394,8 @@ function editarProductoAlberca(){
         success: function(respuesta){
             respuesta = respuesta.trim();
             if(respuesta == 1){
-                $('#div_tabla_bombas').load("partials/tabla.php"); 
-                $("#editar_bomba").modal('close');
+                $('#div_tabla_bombas').load("partials/tabla.php");
+                $("#editar_bomba").modal('close'); 
                 swal.fire("¡Listo!", "Producto actualizado correctamente!", "success");
             }else{
                 swal.fire("Error al actualizar producto", "No se pudo actualizar el producto: "+respuesta, "error");
@@ -382,6 +460,9 @@ function quitarCargaFriccion(){
 $('#lps').on('change', disableDiametros);
 
 function disableDiametros(){
+    let lpsInput = $('#lps').val();
+    let lps = 0;
+
     if($('#lps').val() == 0.7 || $('#lps').val() == 1){
         $('.diam_1').prop('disabled', false);
         $('.diam_2').prop('disabled', false);
@@ -391,14 +472,13 @@ function disableDiametros(){
         $('.diam_6').prop('disabled', false);
     }
     if($('#lps').val() == 1.2 || $('#lps').val() == 1.5){
-        $('.diam_1').prop('disabled', false);
+        $('.diam_1').prop('disabled', true);
         $('.diam_2').prop('disabled', false);
         $('.diam_3').prop('disabled', false);
         $('.diam_4').prop('disabled', false);
         $('.diam_5').prop('disabled', false);
-        $('.diam_6').prop('disabled', true);
+        $('.diam_6').prop('disabled', false);
     }
-
     if($('#lps').val() == 2 || $('#lps').val() == 2.5 || $('#lps').val() == 3){
         $('.diam_1').prop('disabled', true);
         $('.diam_2').prop('disabled', true);
@@ -407,47 +487,37 @@ function disableDiametros(){
         $('.diam_5').prop('disabled', false);
         $('.diam_6').prop('disabled', false);
     }
+
+    switch (lpsInput){
+        case "0.7":
+            lps = 16; 
+            break;
+        case "1":
+            lps = 16;
+            break;
+        case "1.2":
+            lps = 20;
+            break;
+        case "1.5":
+            lps = 26;
+            break;
+        case "2":
+            lps = 36;
+            break;
+        case "2.5":
+            lps = 40;
+            break;
+        case "3":
+            lps = 50;
+            break;
+    }
+
+    $('#gpm_label').text(lps);
 }
 
-$('#form_buscar_bombas_pp').on('submit', buscarBombaPP);
-function buscarBombaPP(){
-    event.preventDefault()
-    $.ajax({
-        method: "POST",
-        data: $('#form_buscar_bombas_pp').serialize(),
-        url:"procesos/agregarProductoPP.php",
-        beforeSend: function(){
-            $('#preloader_cards_pp').show();
-        },
-        error(jqXHR, textStatus, errorThrown){
-            $('#preloader_cards_pp').hide();
-            if (jqXHR.status === 0) {
-                alert('Not connect: Verify Network.');
-              } else if (jqXHR.status == 404) {
-                alert('Requested page not found [404]');
-              } else if (jqXHR.status == 500) {
-                alert('Internal Server Error [500].');
-              } else if (textStatus === 'parsererror') {
-                alert('Requested JSON parse failed.');
-              } else if (textStatus === 'timeout') {
-                alert('Time out error.');
-              } else if (textStatus === 'abort') {
-                alert('Ajax request aborted.');
-              }
-              console.log(xhr.responseText);
-        },
-        success: function(mensaje){
-            mensaje = jQuery.parseJSON(mensaje);
-            if(mensaje == '-1'){
-                swal.fire('El valor de LPS ingresado es muy alto', 'Ingresa uno mas pequeño', 'error');
-            }
-            if(mensaje == '-2'){
-                swal.fire('El valor de LPS ingresado no se puede utilizar con ese diámetro', 'Ingresa un valor de diámetro o LPS diferente', 'error');
-            }
-            console.log(mensaje);
-        }
-    });
-}
+$('#lps').on('change', function(){
+
+});
 
 //tooltip
 document.addEventListener('DOMContentLoaded', function() {

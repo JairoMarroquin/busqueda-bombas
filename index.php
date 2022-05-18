@@ -31,7 +31,7 @@
                     </div>
                 </form>
                 <div class="input-field col s4">
-                    <a data-target="registrar_bomba" id="reg_bom_but" class="btn waves-effect waves-light blue lighten-2 modal-trigger"><i class="fa-light fa-plus"></i> Nuevo producto</a>
+                    <a data-target="registrar_bomba" id="reg_bom_but" class="btn waves-effect waves-light blue lighten-2 modal-trigger reg_bom_but"><i class="fa-light fa-plus"></i> Nuevo producto</a>
                 </div><br>
             </div>
         </div>
@@ -68,7 +68,7 @@
                         </div>
                         <div class="form_footer">
                             <div class="profundidad_promedio">
-                                <span id="prof_prom_style">Profundidad Promedio: </span>
+                                <span class="label" id="prof_prom_style">Profundidad Promedio: </span>
                                 <span id="profundidad_promedio">0</span> MTS
                             </div>
                             <div>
@@ -242,8 +242,12 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col s10"></div>
+                        <div class="footer_pp">
+                            <div class="col s10">
+                                <div class="label">
+                                    GPM: <span id="gpm_label">0</span>
+                                </div>
+                            </div>
                             <div class="col s2">
                                 <button class="waves-effect waves-light btn waves-effect waves-light blue lighten-2 tooltipped" data-position="bottom" data-tooltip="Ver productos adecuados para el cliente." id="buscar_bombas_pp"><i class="fa-solid fa-magnifying-glass"></i></button>
                             </div> 
@@ -264,20 +268,18 @@
                                     </div>
                                 </div>
                             </div>
-                            <br><br><br><br><br><br>
-                            <div class="preloader-wrapper big active" style="display:block;">
-                                <div class="spinner-layer spinner-blue-only">
-                                    <div class="circle-clipper left">
-                                        <div class="circle"></div>
-                                    </div><div class="gap-patch">
-                                        <div class="circle"></div>
-                                    </div><div class="circle-clipper right">
-                                        <div class="circle"></div>
-                                    </div>
-                                </div>
+                    </center>
+                    
+                    <!--CARD DE BOMBAS RECOMENDADAS POZO PROFUNDO-->
+                    <div class="card z-depth-2" id="bombas_recomendadas_pp_card">
+                        <div>
+                            <h5 id="bombas_recomendadas_pp">Bombas para <span id="titulo_cdt">0</span> MTS</h5>
+                            <div class="lista_bombas_recomendadas">
+                                <span id="cero_bombas_pp"></span>
+                                <ul id="lista_bombas_pp"></ul>
                             </div>
                         </div>
-                    </center>
+                    </div>
                 </div>
             </div>
         </div>

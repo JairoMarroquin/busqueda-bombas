@@ -87,8 +87,29 @@ include "../config/conexion.php";
 
             return $respuesta;
         }
-        public function buscarProductosPP($cdt){
+        public function buscarProductosPP($datos){
             $conexion = Conexion::conectar();
-            $sql = "SELECT * FROM ";
+            $hp = $datos['hp'];
+            $gpm = $datos['gpm'];
+            $cdt = $datos['cdt'];
+
+            $gpm1 = $gpm+15;
+
+            $cdt1= $cdt-15;
+            $cdt2= $cdt+15;
+
+            $sql = "SELECT nombre, hp, gpm, eliminado, objetivo, carga_eficiente FROM bombas_alberca WHERE hp = '$hp' AND gpm BETWEEN '$gpm' AND '$gpm1' AND carga_eficiente BETWEEN '$cdt1' AND '$cdt2' ORDER BY gpm ASC LIMIT 7 ";
+            $respuesta = mysqli_query($conexion, $sql);
+            sleep(1);
+            if(mysqli_num_rows($respuesta) > 0){
+                $mData=array('status'=>true);
+                while($bombas = mysqli_fetch_assoc($respuesta)){
+                    $bombas['cdt'] = round($cdt, 2);
+                    $mData['data'][] = $bombas;
+                }
+            }else{
+                $mData=array('status' => false, 'msg' => 'No se encontraron productos compatibles');
+            }
+            return json_encode($mData); 
         }
     }
