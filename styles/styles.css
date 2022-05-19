@@ -53,13 +53,15 @@ li{
 }
 
 .tabla_bombas{
-    width:45%;
+    width:60%;
 }
 
-.tabla_bombas #gpm_header, #gpm_body, #opciones, #opc_tabla{
+.tabla_bombas #gpm_header, #gpm_body, #opciones, #opc_tabla, #tabla_lps, #tabla_cdt,#lps_header, #cdt_header{
     text-align: center;
 }
-
+#opciones{
+    width: 20%;
+}
 .tabla_bombas #nombre_header{
     font-weight:800;
 }
@@ -78,7 +80,7 @@ li{
     font-size: 18px;
 }
 
-#bombas_recomendadas_card, #filtros_recomendados_card{
+#bombas_recomendadas_card, #filtros_recomendados_card, #bombas_recomendadas_pp_card{
     padding:1%;
     border-radius: 15px;
 }
@@ -114,7 +116,7 @@ li{
     justify-content: center;
 }
 
-#bombas_recomendadas_card{
+#bombas_recomendadas_card, #bombas_recomendadas_pp_card{
     display: none;
 }
 
@@ -128,7 +130,7 @@ li{
 
 /*OPCION DE ALBERCAS*/
 .opciones_alberca{
-    width: 70%;
+    width: 80%;
 }
 
 .opciones_alberca a{
@@ -140,7 +142,7 @@ li{
 }
 .container_alberca{
     display:flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
 }
 .nombre_tabla_alberca{
     text-align:center;
@@ -152,11 +154,23 @@ li{
 .consultar_pozo_profundo{
     text-align:center;
 }
+
 .profundidad_promedio{
     font-size:15px;
     opacity:85%;
     text-decoration: underline;
     margin-top: 2%;
+}
+.label{
+    font-size:15px;
+    opacity:85%;
+    text-decoration: underline;
+    margin-top: 2%;
+}
+
+.footer_pp{
+    display: flex;
+    justify-content: space-between;
 }
 
 .form_footer{
