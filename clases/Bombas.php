@@ -5,8 +5,8 @@ include "../config/conexion.php";
     class Bombas extends Conexion {
 
         public function buscarBombas($datos){
-            $largo = $datos['largo'];
-            $ancho = $datos['ancho']; //RECOPILO LAS MEDIDAS DE LA ALBERCA
+            $largo = $datos['largo'];                               //RECOPILO LAS MEDIDAS DE LA ALBERCA
+            $ancho = $datos['ancho']; 
             $profundidad_minima = $datos['profundidad_minima'];
             $profundidad_maxima = $datos['profundidad_maxima'];
 
@@ -27,6 +27,8 @@ include "../config/conexion.php";
 
             $conexion = Conexion::conectar();
             $sql = "SELECT nombre, hp, gpm, tipo FROM bombas_alberca WHERE gpm BETWEEN '$gpm' AND '$gpm2' AND eliminado = 0 ORDER BY gpm ASC LIMIT 7";
+            
+            
             $respuesta = mysqli_query($conexion, $sql);
             sleep(1);
             if(mysqli_num_rows($respuesta)> 0){
@@ -42,12 +44,21 @@ include "../config/conexion.php";
             return json_encode($mData); 
         }
         public function agregarProducto($datos){
+            $objetivo = $datos['objetivo'];
             $conexion = Conexion::conectar();
-            $sql = "INSERT INTO bombas_alberca (nombre, hp, gpm, tipo, objetivo) VALUES (?, ?, ?, ?, ?)"; 
-            $query=$conexion->prepare($sql);
-            $query-> bind_param('sssii', $datos['nombre'],$datos['hp'],$datos['gpm'],$datos['tipo'],$datos['objetivo']);
-            $respuesta= $query->execute();
-            $query->close();
+            if($objetivo == 2){
+                $sql = "INSERT INTO bombas_alberca (nombre, hp, gpm, tipo, objetivo, carga_eficiente, lps) VALUES (?, ?, ?, ?, ?, ?, ?)"; 
+                $query=$conexion->prepare($sql);
+                $query-> bind_param('siiiiii', $datos['nombre'],$datos['hp'],$datos['gpm'],$datos['tipo'],$datos['objetivo'],$datos['lps'],$datos['cdt']);
+                $respuesta= $query->execute();
+                $query->close();
+            }elseif($objetivo == 1){
+                $sql = "INSERT INTO bombas_alberca (nombre, hp, gpm, tipo, objetivo) VALUES (?, ?, ?, ?, ?)"; 
+                $query=$conexion->prepare($sql);
+                $query-> bind_param('sssii', $datos['nombre'],$datos['hp'],$datos['gpm'],$datos['tipo'],$datos['objetivo']);
+                $respuesta= $query->execute();
+                $query->close();
+            }
             return $respuesta;
         }
         public function eliminarProducto($id){
@@ -67,23 +78,42 @@ include "../config/conexion.php";
                 'hp' => $bomba['hp'],
                 'gpm' => $bomba['gpm'],
                 'tipo' => $bomba['tipo'],
-                'objetivo' => $bomba['objetivo']
+                'objetivo' => $bomba['objetivo'],
+                'lps' => $bomba['lps'],
+                'carga_eficiente' => $bomba['carga_eficiente']
             );
             return $datos;
         }
         public function editarProductosAlberca($datos){
             $conexion = Conexion::conectar();
             $id = $_POST['idBombaEditar'];
-            $sql = "  UPDATE bombas_alberca SET     nombre = ?,
-                                                    hp = ?,
-                                                    gpm = ?,
-                                                    tipo = ?,
-                                                    objetivo = ?
+            if($datos['objetivo'] == 1){
+                $sql = "UPDATE bombas_alberca SET     
+                                    nombre = ?,
+                                    hp = ?,
+                                    gpm = ?,
+                                    tipo = ?,
+                                    objetivo = ?
                         WHERE id_bomba = '$id'";
-            $query = $conexion -> prepare($sql);
-            $query-> bind_param('sssii', $datos['nombre'], $datos['hp'], $datos['gpm'], $datos['tipo'],$datos['objetivo']);
-            $respuesta = $query->execute();
-            $query->close();
+                $query = $conexion -> prepare($sql);
+                $query-> bind_param('sssii', $datos['nombre'], $datos['hp'], $datos['gpm'], $datos['tipo'],$datos['objetivo']);
+                $respuesta = $query->execute();
+                $query->close();
+            }else{
+                $sql = "UPDATE bombas_alberca SET     
+                                    nombre = ?,
+                                    hp = ?,
+                                    tipo = ?,
+                                    objetivo = ?,
+                                    lps = ?,
+                                    carga_eficiente = ?
+                        WHERE id_bomba = '$id'";
+                $query = $conexion -> prepare($sql);
+                $query-> bind_param('sssiii', $datos['nombre'], $datos['hp'], $datos['tipo'],$datos['objetivo'], $datos['lps'], $datos['carga_eficiente']);
+                $respuesta = $query->execute();
+                $query->close();
+            }
+
 
             return $respuesta;
         }
@@ -108,7 +138,7 @@ include "../config/conexion.php";
                     $mData['data'][] = $bombas;
                 }
             }else{
-                $mData=array('status' => false, 'msg' => 'No se encontraron productos compatibles');
+                $mData=array('status' => false, 'msg' => 'No se encontraron productos compatibles', 'cdt' => round($cdt,2));
             }
             return json_encode($mData); 
         }

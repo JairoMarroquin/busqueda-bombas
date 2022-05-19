@@ -1,11 +1,10 @@
 $(document).ready(function(){
-    $('#div_tabla_bombas').load("partials/tabla.php");
     $('#alberca_opcion').css("text-decoration", "underline");
     $('.consultar_pozo_profundo').hide();
 
-    $('.reg_bom_but').hide();
-    $('.del_bom_but').hide();
-    $('.edi_bom_but').hide();
+    //$('.reg_bom_but').hide();
+    
+    $('.tabla_bombas').hide();
     $('#clave_incorr').hide();
 
     //deshabilitar inputs de modales
@@ -22,16 +21,15 @@ function validarContra(event){
     event.preventDefault()
     let clave = $('#clave').val();
     if(clave == '19931994'){
-        $('.reg_bom_but').show();
-        $('.del_bom_but').show();
-        $('.edi_bom_but').show();
-        $('#clave_incorr').hide();
+        $('.tabla_bombas').show();
+        $('#div_tabla_bombas').load("partials/tabla.php");
         $('#clave').val('');
+        $('#clave_incorr').hide();
     }else{    
-        $('.reg_bom_but').hide();
-        $('.del_bom_but').hide();
-        $('.edi_bom_but').hide();
+        $('.tabla_bombas').hide();
         $('#clave_incorr').show();
+        $('#clave_incorrecta').text('Contraseña incorrecta!');
+        
     }
 }
 
@@ -63,6 +61,18 @@ $('#objetivo').on('change', function(){
         $('#lps_reg').prop('disabled', true);
         $('#carga_eficiente').prop('disabled', true);
         $('#gpm_producto').prop('disabled', false);
+    }
+});
+
+$('#p').on('change', function(){
+    if($("#p").is(':checked')){
+        $('#lps_edi').prop('disabled', true);
+        $('#carga_eficiente_edi').prop('disabled', true);
+        $('#gpm_productou').prop('disabled', true);
+    }else{
+        $('#lps_edi').prop('disabled', true);
+        $('#carga_eficiente_edi').prop('disabled', true);
+        $('#gpm_productou').prop('disabled', false);
     }
 });
 
@@ -259,6 +269,7 @@ function buscarBombaPP(){
             $('#preloader_cards_pp').hide();
             $('#buscar_bombas_pp').prop('disabled', false);
             respuesta = jQuery.parseJSON(respuesta);
+            console.log(respuesta);
             if(respuesta == '-1'){
                 swal.fire('El valor de LPS ingresado es muy alto', 'Ingresa uno valor de LPSmas pequeño', 'error');
             }
@@ -280,6 +291,7 @@ function buscarBombaPP(){
                 }
                 $('#bombas_recomendadas_pp_card').show();
             }else{
+                $('#titulo_cdt').text(respuesta.cdt);
                 $('#bombas_recomendadas_pp_card').show();
                 $('#cero_bombas_pp').show();
                 $('#cero_bombas_pp').text(respuesta.msg);
@@ -297,6 +309,7 @@ function registrarProductoAlberca(){
         url: "procesos/agregarProductoAlberca.php",
         success:function(respuesta){
             respuesta = respuesta.trim();
+            console.log(respuesta);
             if(respuesta == 1){
                 $('#div_tabla_bombas').load("partials/tabla.php");
                 $('#frmAgregarProductoAlberca')[0].reset();
@@ -362,10 +375,14 @@ function obtenerDatosProductoAlberca(idProd){
         },
         success: function(bomba){
             bomba = jQuery.parseJSON(bomba);
+            console.log(bomba);
             $('#idBombaEditar').val(bomba['id']);
             $('#nombre_productou').val(bomba['nombre']);
             $('#hp_productou').val(bomba['hp']);
             $('#gpm_productou').val(bomba['gpm']);
+            $('#lps_edi').val(bomba['lps']);
+            $('#carga_eficiente_edi').val(bomba['carga_eficiente']);
+
             if(bomba['tipo'] == 1){
                 $('#b').prop("checked", true);
                 $('#f').prop("checked", false);
@@ -376,9 +393,17 @@ function obtenerDatosProductoAlberca(idProd){
             if(bomba['objetivo'] == 1){
                 $('#a').prop("checked", true);
                 $('#p').prop("checked", false);
+
+                $('#lps_edi').prop('disabled', true);
+                $('#carga_eficiente_edi').prop('disabled', true);
+                $('#gpm_productou').prop('disabled', false);
             }else{
                 $('#a').prop("checked", false);
                 $('#p').prop("checked", true);
+
+                $('#lps_edi').prop('disabled', false);
+                $('#carga_eficiente_edi').prop('disabled', false);
+                $('#gpm_productou').prop('disabled', true);
             }
             $('#nombre_header_editar').text(bomba['nombre']);
         }
@@ -394,12 +419,15 @@ function editarProductoAlberca(){
         success: function(respuesta){
             respuesta = respuesta.trim();
             if(respuesta == 1){
+                $('.tabla_bombas').show();
                 $('#div_tabla_bombas').load("partials/tabla.php");
                 $("#editar_bomba").modal('close'); 
                 swal.fire("¡Listo!", "Producto actualizado correctamente!", "success");
             }else{
                 swal.fire("Error al actualizar producto", "No se pudo actualizar el producto: "+respuesta, "error");
             }
+            $('.del_bom_but').show();
+            $('.edi_bom_but').show();
         }
     });
 }

@@ -36,7 +36,7 @@
             </div>
         </div>
         <div id="clave_incorr">
-            <span style="color:red;">La contraseña es incorrecta!</span>
+            <span style="color:red;" id="clave_incorrecta"></span>
         </div><hr>
         <div class="container_alberca">
             <div class="tabla_bombas">
@@ -309,7 +309,7 @@
                         <div class="switch">
                             <label style="font-size:14px;">
                             Bomba
-                            <input type="hidden" value= "1" name="tipo" checked>
+                            <input type="hidden" value= "1" name="tipo" id="tipo_checked" checked>
                             <input type="checkbox" value= "2" name="tipo">
                             <span class="lever"></span>
                             Filtro
@@ -387,6 +387,16 @@
                             Pozo Profundo
                             </label>
                         </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s4">
+                        <input id="lps_edi" name="lps_edi" placeholder="LPS" type="text" class="validate" onkeypress="return (event.charCode >= 46 && event.charCode <= 57)" min="1" required>
+                        <label for="lps_edi">LPS</label>
+                    </div>
+                    <div class="input-field col s4">
+                        <input id="carga_eficiente_edi" name="carga_eficiente_edi" placeholder="Carga Eficiente" type="text" class="validate" onkeypress="return (event.charCode >= 46 && event.charCode <= 57)" min="1" required>
+                        <label for="carga_eficiente_edi">Carga Eficiente</label>
                     </div>
                 </div>
             </div>
